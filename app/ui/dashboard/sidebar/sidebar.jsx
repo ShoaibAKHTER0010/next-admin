@@ -1,7 +1,6 @@
-import React from 'react'
+import React from 'react';
 import MenuLink from "./menuLink/menuLink";
 import styles from "./sidebar.module.css";
-import { auth, signOut } from "@/app/auth";
 import Image from 'next/image';
 import {
   MdDashboard,
@@ -16,6 +15,13 @@ import {
   MdLogout,
 } from "react-icons/md";
 
+// Define static user data
+const user = {
+  img: "/noavatar.png", // Default or static image URL
+  username: "John Doe", // Static username
+};
+
+// Static menu items
 const menuItems = [
   {
     title: "Pages",
@@ -79,18 +85,17 @@ const menuItems = [
   },
 ];
 
+const Sidebar = () => {
 
-const Sidebar = async () => {
-  const { user } = await auth();
   return (
     <div className={styles.container}>
       <div className={styles.user}>
         <Image
           className={styles.userImage}
-          src={user.img || "/noavatar.png"}
-          alt=""
-          width="50"
-          height="50"
+          src={user.img}
+          alt="User Image"
+          width={50}
+          height={50}
         />
         <div className={styles.userDetail}>
           <span className={styles.username}>{user.username}</span>
@@ -107,17 +112,10 @@ const Sidebar = async () => {
           </li>
         ))}
       </ul>
-      <form
-        action={async () => {
-          "use server";
-          await signOut();
-        }}
-      >
-        <button className={styles.logout}>
-          <MdLogout />
-          Logout
-        </button>
-      </form>
+      <button className={styles.logout} >
+        <MdLogout />
+        Logout
+      </button>
     </div>
   );
 };
